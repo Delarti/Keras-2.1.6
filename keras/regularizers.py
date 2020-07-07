@@ -105,7 +105,7 @@ class Memoire_Regularizer(Regularizer):
     return tf.linalg.tensor_diag(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(weights)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
 
   def get_config(self):
-    return {'lambda': float(self.lambd)}
+    return {'lambd': float(self.lambd)}
 
 ####################################################################################################################################
 
