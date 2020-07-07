@@ -9,6 +9,10 @@ from . import backend as K
 from .utils.generic_utils import serialize_keras_object
 from .utils.generic_utils import deserialize_keras_object
 
+############################################
+import tensorflow as tf
+############################################
+
 
 class Regularizer(object):
     """Regularizer base class.
@@ -86,3 +90,22 @@ def get(identifier):
     else:
         raise ValueError('Could not interpret regularizer identifier: ' +
                          str(identifier))
+
+        
+####################################################################################################################################
+
+class Memoire_Regularizer(Regularizer):
+  def __init__(self, lambd, C_red, C_green, C_blue): #use lambd instead of lambda because lambda reserved word in Python
+    self.lambd = lambd
+    self.C_red = C_red
+    self.C_green = C_green
+    self.C_blue = C_blue
+
+  def __call__(self, weights):
+    return tf.linalg.tensor_diag(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(weights)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
+
+  def get_config(self):
+    return {'lambda': float(self.lambd)}
+
+####################################################################################################################################
+
