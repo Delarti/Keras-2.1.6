@@ -101,8 +101,8 @@ class Memoire_Regularizer(Regularizer):
     self.C_green = C_green
     self.C_blue = C_blue
 
-  def __call__(self, weights):
-    return tf.linalg.tensor_diag(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(weights)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
+  def __call__(self, x):
+    return tf.linalg.tensor_diag(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(x)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
 
   def get_config(self):
     return {'lambd': float(self.lambd)}
