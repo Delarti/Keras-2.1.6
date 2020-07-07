@@ -95,7 +95,7 @@ def get(identifier):
 ####################################################################################################################################
 
 class Memoire_Regularizer(Regularizer):
-  def __init__(self, lambd, C_red, C_green, C_blue): #use lambd instead of lambda because lambda reserved word in Python
+  def __init__(self, lambd, C_red, C_green, C_blue):
     self.lambd = lambd
     self.C_red = C_red
     self.C_green = C_green
