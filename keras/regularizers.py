@@ -108,7 +108,7 @@ def get(identifier):
 #         return {'lam': float(self.lam),
 #                 'C_red': self.C_red,
 #                 'C_green': self.C_green,
-#                 'C_blue': self.C_blue,
+#                 'C_blue': self.C_blue
 #                }
 
 ####################################################################################################################################
@@ -127,6 +127,6 @@ class Memoire_Regularizer(Regularizer):
         return {'lam': float(self.lam),
                 'C_red': self.C_red.numpy(),
                 'C_green': self.C_green.numpy(),
-                'C_blue': self.C_blue.numpy(),
+                'C_blue': self.C_blue.numpy()
                }
 
