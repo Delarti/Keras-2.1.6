@@ -125,8 +125,8 @@ class Memoire_Regularizer(Regularizer):
 
     def get_config(self):
         return {'lam': float(self.lam),
-                'C_red': self.C_red.numpy(),
-                'C_green': self.C_green.numpy(),
-                'C_blue': self.C_blue.numpy()
+                'C_red': K.eval(self.C_red),
+                'C_green': K.eval(self.C_green),
+                'C_blue': K.eval(self.C_blue)
                }
 
