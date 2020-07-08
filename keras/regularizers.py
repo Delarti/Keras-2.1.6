@@ -114,19 +114,19 @@ def get(identifier):
 ####################################################################################################################################
 
 class Memoire_Regularizer(Regularizer):
-    def __init__(self, lam, C_red, C_green, C_blue):
-        self.lam = lam
+    def __init__(self, lambd, C_red, C_green, C_blue):
+        self.lambd = lambd
         self.C_red = K.variable(C_red, dtype='float32')
         self.C_green = K.variable(C_green, dtype='float32')
         self.C_blue = K.variable(C_blue, dtype='float32')
 
     def __call__(self, x):
-        return K.sum(tf.diag_part(self.lam * K.dot(K.transpose(K.square(x)), self.C_red + self.C_green + self.C_blue)))
+        return K.sum(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(x)), self.C_red + self.C_green + self.C_blue)))
 
     def get_config(self):
-        return {'lam': float(self.lam),
-                'C_red': self.C_red,
-                'C_green': self.C_green,
-                'C_blue': self.C_blue
+        return {'lambd': float(self.lambd),
+                'C_red': K.eval(self.C_red),
+                'C_green': K.eval(self.C_green),
+                'C_blue': K.eval(self.C_blue)
                }
 
