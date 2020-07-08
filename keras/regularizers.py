@@ -102,7 +102,7 @@ class Memoire_Regularizer(Regularizer):
         self.C_blue = C_blue
 
     def __call__(self, x):
-        return tf.linalg.tensor_diag(tf.diag_part(self.lam * K.dot(K.transpose(K.square(x)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
+        return K.sum(tf.diag_part(self.lam * K.dot(K.transpose(K.square(x)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
 
     def get_config(self):
         return {'lam': float(self.lam),
