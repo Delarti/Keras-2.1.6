@@ -94,22 +94,39 @@ def get(identifier):
         
 ####################################################################################################################################
 
+# class Memoire_Regularizer(Regularizer):
+#     def __init__(self, lam, C_red, C_green, C_blue):
+#         self.lam = lam
+#         self.C_red = C_red
+#         self.C_green = C_green
+#         self.C_blue = C_blue
+
+#     def __call__(self, x):
+#         return K.sum(tf.diag_part(self.lam * K.dot(K.transpose(K.square(x)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
+
+#     def get_config(self):
+#         return {'lam': float(self.lam),
+#                 'C_red': self.C_red,
+#                 'C_green': self.C_green,
+#                 'C_blue': self.C_blue,
+#                }
+
+####################################################################################################################################
+
 class Memoire_Regularizer(Regularizer):
     def __init__(self, lam, C_red, C_green, C_blue):
         self.lam = lam
-        self.C_red = C_red
-        self.C_green = C_green
-        self.C_blue = C_blue
+        self.C_red = K.variable(C_red, dtype='float32')
+        self.C_green = K.variable(C_green, dtype='float32')
+        self.C_blue = K.variable(C_blue, dtype='float32')
 
     def __call__(self, x):
-        return K.sum(tf.diag_part(self.lam * K.dot(K.transpose(K.square(x)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
+        return K.sum(tf.diag_part(self.lam * K.dot(K.transpose(K.square(x)), self.C_red + self.C_green + self.C_blue)))
 
     def get_config(self):
         return {'lam': float(self.lam),
-                'C_red': self.C_red,
-                'C_green': self.C_green,
-                'C_blue': self.C_blue,
+                'C_red': self.C_red.numpy(),
+                'C_green': self.C_green.numpy(),
+                'C_blue': self.C_blue.numpy(),
                }
-
-####################################################################################################################################
 
