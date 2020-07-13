@@ -121,7 +121,7 @@ class Memoire_Regularizer(Regularizer):
         self.C_blue = K.variable(C_blue, dtype='float32')
 
     def __call__(self, x):
-        return K.sum(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(x)), self.C_red + self.C_green + self.C_blue)))
+        return K.sum(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(x)), (self.C_red + self.C_green + self.C_blue)/3)))
 
     def get_config(self):
         return {'lambd': float(self.lambd),
