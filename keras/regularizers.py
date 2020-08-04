@@ -122,15 +122,10 @@ class Memoire_Regularizer(Regularizer):
 
     def __call__(self, x):
         A = (self.C_red + self.C_green + self.C_blue)/3
-        print(type(A))
         B = K.dot(K.transpose(K.square(x)), A)
-        print(type(B))
         C = self.lambd * B
-        print(type(C))
         D = tf.diag_part(C)
-        print(type(D))
         E = K.sum(D)
-        print(type(E))
         return E
 #         return K.sum(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(x)), (self.C_red + self.C_green + self.C_blue)/3)))
     
