@@ -116,9 +116,9 @@ def get(identifier):
 class Memoire_Regularizer(Regularizer):
     def __init__(self, lambd, C_red, C_green, C_blue):
         self.lambd = lambd
-        self.C_red = K.variable(C_red, dtype='float32_ref')
-        self.C_green = K.variable(C_green, dtype='float32_ref')
-        self.C_blue = K.variable(C_blue, dtype='float32_ref')
+        self.C_red = K.variable(C_red, dtype= tf.float32_ref)
+        self.C_green = K.variable(C_green, dtype= tf.float32_ref)
+        self.C_blue = K.variable(C_blue, dtype= tf.float32_ref)
 
     def __call__(self, x):
         print(type(self.C_red))
