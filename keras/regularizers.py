@@ -121,12 +121,16 @@ class Memoire_Regularizer(Regularizer):
         self.C_blue = K.variable(C_blue, dtype= tf.float32_ref)
 
     def __call__(self, x):
-        print(type(self.C_red))
         A = (self.C_red + self.C_green + self.C_blue)/3
+        print(type(A))
         B = K.dot(K.transpose(K.square(x)), A)
+        print(type(B))
         C = self.lambd * B
+        print(type(C))
         D = tf.diag_part(C)
+        print(type(D))
         E = K.sum(D)
+        print(type(E))
         return E
 #         return K.sum(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(x)), (self.C_red + self.C_green + self.C_blue)/3)))
     
