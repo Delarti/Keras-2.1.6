@@ -91,49 +91,51 @@ def get(identifier):
         raise ValueError('Could not interpret regularizer identifier: ' +
                          str(identifier))
 
-        
 ####################################################################################################################################
 
 # class Memoire_Regularizer(Regularizer):
-#     def __init__(self, lam, C_red, C_green, C_blue):
-#         self.lam = lam
-#         self.C_red = C_red
-#         self.C_green = C_green
-#         self.C_blue = C_blue
+#     def __init__(self, lambd, C_red, C_green, C_blue):
+#         self.lambd = lambd
+#         self.C_red = K.variable(C_red, dtype= 'float32')
+#         self.C_green = K.variable(C_green, dtype= 'float32')
+#         self.C_blue = K.variable(C_blue, dtype= 'float32')
 
 #     def __call__(self, x):
-#         return K.sum(tf.diag_part(self.lam * K.dot(K.transpose(K.square(x)), K.variable(self.C_red, dtype='float32') + K.variable(self.C_green, dtype='float32') + K.variable(self.C_blue, dtype='float32'))))
+#         A = (self.C_red + self.C_green + self.C_blue)/3
+#         B = K.dot(K.transpose(K.square(x)), A)
+#         C = self.lambd * B
+#         D = tf.diag_part(C)
+#         E = K.sum(D)
+#         return E
+# #         return K.sum(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(x)), (self.C_red + self.C_green + self.C_blue)/3)))
+    
 
 #     def get_config(self):
-#         return {'lam': float(self.lam),
-#                 'C_red': self.C_red,
-#                 'C_green': self.C_green,
-#                 'C_blue': self.C_blue
+#         return {'lambd': float(self.lambd),
+#                 'C_red': K.eval(self.C_red),
+#                 'C_green': K.eval(self.C_green),
+#                 'C_blue': K.eval(self.C_blue)
 #                }
 
 ####################################################################################################################################
 
 class Memoire_Regularizer(Regularizer):
-    def __init__(self, lambd, C_red, C_green, C_blue):
+    def __init__(self, lambd, C_avg):
         self.lambd = lambd
-        self.C_red = K.variable(C_red, dtype= 'float32')
-        self.C_green = K.variable(C_green, dtype= 'float32')
-        self.C_blue = K.variable(C_blue, dtype= 'float32')
+        self.C_avg = K.variable(C_avg, dtype= 'float32')
 
-    def __call__(self, x):
-        A = (self.C_red + self.C_green + self.C_blue)/3
-        B = K.dot(K.transpose(K.square(x)), A)
-        C = self.lambd * B
-        D = tf.diag_part(C)
-        E = K.sum(D)
-        return E
-#         return K.sum(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(x)), (self.C_red + self.C_green + self.C_blue)/3)))
+    def __call__(self, W):
+        dot_product = K.dot(K.transpose(K.square(W)), self.C_avg)
+        lambd_mult = self.lambd * dot_product
+        diag_matrix = tf.diag_part(lambd_mult)
+        regularization = K.sum(diag_matrix)
+        return regularization
+    
+#         regularization = return K.sum(tf.diag_part(self.lambd * K.dot(K.transpose(K.square(W)), self.C_avg)))
+#         return regularization
     
 
     def get_config(self):
         return {'lambd': float(self.lambd),
-                'C_red': K.eval(self.C_red),
-                'C_green': K.eval(self.C_green),
-                'C_blue': K.eval(self.C_blue)
+                'C_avg': K.eval(self.C_avg)
                }
-
